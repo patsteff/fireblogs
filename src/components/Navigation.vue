@@ -8,20 +8,20 @@
       </div>
       <div class="nav-links">
         <ul v-show="!mobile">
-          <router-link class="link" to="#">Home</router-link>
-          <router-link class="link" to="#">Blogs</router-link>
+          <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
+          <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
           <router-link class="link" to="#">Create Post</router-link>
-          <router-link class="link" to="#">Login</router-link>
+          <router-link class="link" :to="{ name: 'Login' }">Login</router-link>
         </ul>
       </div>
     </nav>
-    <menuIcon @click="toogleMobileNav" class="menu-icon" v-show="mobile"/>
+    <menuIcon @click="toogleMobileNav" class="menu-icon" v-show="mobile" />
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
-        <router-link class="link" to="#">Home</router-link>
-        <router-link class="link" to="#">Blogs</router-link>
+        <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
+        <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
         <router-link class="link" to="#">Create Post</router-link>
-        <router-link class="link" to="#">Login</router-link>
+        <router-link class="link" :to="{ name: 'Login' }">Login</router-link>
       </ul>
     </transition>
   </header>
@@ -35,32 +35,32 @@ export default {
     menuIcon,
   },
   data() {
-      return {
-          mobile: null,
-          mobileNav: null,
-          windowWidth: null,
-      };
+    return {
+      mobile: null,
+      mobileNav: null,
+      windowWidth: null,
+    };
   },
   created() {
-      window.addEventListener('resize', this.checkScreen);
-      this.checkScreen();
+    window.addEventListener("resize", this.checkScreen);
+    this.checkScreen();
   },
   methods: {
-      checkScreen() {
-          this.windowWidth = window.innerWidth;
-          if(this.windowWidth <= 750) {
-              this.mobile = true;
-              return;
-          }
-          this.mobile = false;
-          this.mobileNav = false;
-          return;
-      }, 
-
-      toogleMobileNav() {
-          this.mobileNav = !this.mobileNav;
+    checkScreen() {
+      this.windowWidth = window.innerWidth;
+      if (this.windowWidth <= 750) {
+        this.mobile = true;
+        return;
       }
-  }
+      this.mobile = false;
+      this.mobileNav = false;
+      return;
+    },
+
+    toogleMobileNav() {
+      this.mobileNav = !this.mobileNav;
+    },
+  },
 };
 </script>
 
@@ -147,19 +147,19 @@ header {
 
   .mobile-nav-enter-active,
   .mobile-nav-leave-active {
-      transition: all 1s ease;
+    transition: all 1s ease;
   }
 
   .mobile-nav-enter {
-      transform: translateX(-250px);
+    transform: translateX(-250px);
   }
 
   .mobile-nav-enter-to {
-      transform: translateX(0);
+    transform: translateX(0);
   }
 
   .mobile-nav-leave-to {
-      transform: translateX(-250px);
+    transform: translateX(-250px);
   }
 }
 </style>

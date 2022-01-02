@@ -8,9 +8,9 @@
     />
     <div class="blog-card-wrap">
       <div class="container">
-        <h3>Vie More Recent Blogs</h3>
+        <h3>View More Recent Blogs</h3>
         <div class="blog-cards">
-          <BlogCards
+          <BlogCard
             :post="post"
             v-for="(post, index) in sampleBlogCards"
             :key="index"
@@ -18,15 +18,24 @@
         </div>
       </div>
     </div>
+    <div class="updates">
+      <div class="container">
+        <h2>Never miss a post. Register for your free account today</h2>
+        <router-link class="router-button" to="#">
+          Register for Blogs <Arrow class="arrow arrow-light" />
+        </router-link>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import BlogPost from "../components/BlogPost";
-import BlogCards from "../components/BlogCard";
+import BlogCard from "../components/BlogCard";
+import Arrow from "../assets/Icons/arrow-right-light.svg";
 export default {
   name: "Home",
-  components: { BlogPost, BlogCards },
+  components: { BlogPost, BlogCard, Arrow },
   data() {
     return {
       welcomeScreen: {
@@ -48,29 +57,12 @@ export default {
           blogCoverPhoto: "designed-for-everyone",
         },
       ],
-      sampleBlogCards: [
-        {
-          blogTitle: "Blog Card #1",
-          blogCoverPhoto: "stock-1",
-          blogDate: "May 1, 2021",
-        },
-        {
-          blogTitle: "Blog Card #2",
-          blogCoverPhoto: "stock-2",
-          blogDate: "May 2, 2021",
-        },
-        {
-          blogTitle: "Blog Card #3",
-          blogCoverPhoto: "stock-3",
-          blogDate: "May 3, 2021",
-        },
-        {
-          blogTitle: "Blog Card #4",
-          blogCoverPhoto: "stock-4",
-          blogDate: "May 4, 2021",
-        },
-      ],
     };
+  },
+  computed: {
+    sampleBlogCards() {
+      return this.$store.state.sampleBlogCards;
+    },
   },
 };
 </script>
