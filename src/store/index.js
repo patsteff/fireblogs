@@ -36,14 +36,13 @@ export default new Vuex.Store({
     profileEmail: null,
     profileFirstName: null,
     profileLastName: null,
-    profileUsername: null,
+    profileUserName: null,
     profileId: null,
     profileInitials: null,
   },
   mutations: {
     toggleEditPost(state, payload) {
       state.editPost = payload;
-      console.log(state.editPost);
     },
     updateUser(state, payload) {
       state.user = payload;
@@ -53,7 +52,7 @@ export default new Vuex.Store({
       state.profileEmail = doc.data().email;
       state.profileFirstName = doc.data().firstName;
       state.profileLastName = doc.data().lastName;
-      state.profileUsername = doc.data().userName;
+      state.profileUserName = doc.data().userName;
     },
     setProfileInitials(state) {
       state.profileInitials =
@@ -66,7 +65,6 @@ export default new Vuex.Store({
       const dbResults = await dataBase.get();
       commit("setProfileInfo", dbResults);
       commit("setProfileInitials");
-      console.log(dbResults);
     }
   },
   modules: {
