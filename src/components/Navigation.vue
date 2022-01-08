@@ -10,7 +10,9 @@
         <ul v-show="!mobile">
           <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
           <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
-          <router-link class="link" to="#">Create Post</router-link>
+          <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }"
+            >Create Post</router-link
+          >
           <router-link v-if="!user" class="link" :to="{ name: 'Login' }"
             >Login/Register</router-link
           >
@@ -41,7 +43,7 @@
                   <p>Profile</p>
                 </router-link>
               </div>
-              <div class="option">
+              <div v-if="admin" class="option">
                 <router-link class="option" :to="{ name: 'Admin' }">
                   <adminIcon class="icon" />
                   <p>Admin</p>
@@ -61,8 +63,10 @@
       <ul class="mobile-nav" v-show="mobileNav">
         <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
         <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
-        <router-link class="link" to="#">Create Post</router-link>
-        <router-link class="link" :to="{ name: 'Login' }"
+        <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }"
+          >Create Post</router-link
+        >
+        <router-link v-if="!user" class="link" :to="{ name: 'Login' }"
           >Login/Register</router-link
         >
       </ul>
@@ -127,6 +131,9 @@ export default {
   computed: {
     user() {
       return this.$store.state.user;
+    },
+    admin() {
+      return this.$store.state.profileAdmin;
     },
   },
 };
