@@ -1,5 +1,6 @@
 <template>
   <div class="create-post">
+    <BlogCoverPreview v-show="this.$store.state.blogPhotoPreview" />
     <div class="container">
       <div :class="{ invisible: !error }" class="err-message">
         <p><span>Error:</span>{{ this.errorMsg }}</p>
@@ -16,6 +17,7 @@
             accept=".png, .jpg, .jpeg"
           />
           <button
+            @click="openPreview"
             class="preview"
             :class="{ 'button-inactive': !this.$store.state.blogPhotoFileURL }"
           >
@@ -25,22 +27,32 @@
         </div>
       </div>
       <div class="editor">
-        <vue-editor :editorOptions="editorSettings" v-model="blogHTML" />
+        <vue-editor
+          :editorOptions="editorSettings"
+          v-model="blogHTML"
+          @image-added="imageHandler"
+        />
       </div>
       <div class="blog-actions">
         <button>Publish Blog</button>
-        <router-link class="router-button" to="#">Post Preview</router-link>
+        <router-link class="router-button" :to="{ name: 'BlogPreview' }"
+          >Post Preview</router-link
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import BlogCoverPreview from "../components/BlogCoverPreview";
+import firebase from "firebase/app";
+import "firebase/storage";
 import Quill from "quill";
 window.Quill = Quill;
 const ImageResize = require("quill-image-resize-module").default;
 Quill.register("modules/imageResize", ImageResize);
 export default {
+  components: { BlogCoverPreview },
   name: "CreatePost",
   data() {
     return {
@@ -60,6 +72,27 @@ export default {
       const fileName = this.file.name;
       this.$store.commit("fileNameChange", fileName);
       this.$store.commit("createFileUrl", URL.createObjectURL(this.file));
+    },
+    openPreview() {
+      this.$store.commit("openPhotoPreview");
+    },
+    imageHandler(file, Editor, cursorLocation, resetUploader) {
+      const storageRef = firebase.storage().ref();
+      const docRef = storageRef.child(`documents/blogPostPhotos/${file.name}`);
+      docRef.put(file).on(
+        "state_changed",
+        (snapshot) => {
+          console.log(snapshot);
+        },
+        (err) => {
+          console.log(err);
+        },
+        async () => {
+          const downloadURL = await docRef.getDownloadURL();
+          Editor.insertEmbed(cursorLocation, "image", downloadURL);
+          resetUploader();
+        }
+      );
     },
   },
   computed: {
